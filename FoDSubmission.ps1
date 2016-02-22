@@ -76,13 +76,13 @@ $sb = New-Object -TypeName "System.Text.StringBuilder";
 
 if($ExpressScan) {
 
-[void]$sb.Append('-scan_preference_id:2 ')
+[void]$sb.Append(' -scanPreferenceId:2 ')
 }
-if($ExpressScan){
-[void]$sb.Append('-audit_preference_id:2 ')
+if($AutomatedAudit){
+[void]$sb.Append('-auditPreferenceId:2 ')
 }
 if($SonatypeReport){
-[void]$sb.Append('-run_sonatype_scan:true')
+[void]$sb.Append('-runSonatypeScan:true')
 }
 
 [string] $uploaderCommand = $sb.ToString()
@@ -90,7 +90,6 @@ if($SonatypeReport){
 
 $javaCommand = "-jar " + """" + $fulluploaderpath + """" + " " + $uploaderCommand
 
-# Write-Host $javaCommand
 
 # Call the FoDUpload.jar app with the required parameters
 
@@ -111,7 +110,11 @@ $ps.WaitForExit()
 [string] $Out = $ps.StandardOutput.ReadToEnd();
 
 
-Write-Host $Out
+## Write-Host $Out
 
+###########################
+# uncomment for debugging #
+###########################
 
+# Write-Host $javaCommand
 
