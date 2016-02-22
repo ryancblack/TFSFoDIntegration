@@ -79,10 +79,10 @@ if($ExpressScan) {
 [void]$sb.Append(' -scanPreferenceId:2 ')
 }
 if($AutomatedAudit){
-[void]$sb.Append('-auditPreferenceId:2 ')
+[void]$sb.Append(' -auditPreferenceId:2 ')
 }
 if($SonatypeReport){
-[void]$sb.Append('-runSonatypeScan:true')
+[void]$sb.Append(' -runSonatypeScan:true')
 }
 
 [string] $uploaderCommand = $sb.ToString()
