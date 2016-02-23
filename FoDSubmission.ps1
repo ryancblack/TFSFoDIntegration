@@ -149,7 +149,7 @@ $ps.WaitForExit()
 [string] $Out = $ps.StandardOutput.ReadToEnd();
 
 
-## Write-Host $Out
+Write-Host $Out
 
 ###########################
 # uncomment for debugging #
