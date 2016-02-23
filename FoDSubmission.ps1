@@ -86,24 +86,24 @@ $sb = New-Object -TypeName "System.Text.StringBuilder";
 
 # Append optional proxy settings
 
-if ($ProxyURL -ne $null){
+if ($ProxyURL){
 
 [void]$sb.Append("proxyUrl """ + $ProxyURL + """ ")
 
-if($ProxyUserName -ne $null){
+if($ProxyUserName){
 
 [void]$sb.Append("proxyUsername " + $ProxyUserName + " ")
 }
 
-if($ProxyPassword -ne $null){
+if($ProxyPassword){
 
 [void]$sb.Append("proxyPassword " + $ProxyPassword + " ")
 }
-if($NTworkstationName -ne $null){
+if($NTworkstationName){
 
 [void]$sb.Append("ntWorkstation " + $NTworkstationName + " ")
 }
-if($NTDomain -ne $null){
+if($NTdomain){
 
 [void]$sb.Append("ntDomain " + $NTdomain)
 }
@@ -129,6 +129,12 @@ if($SonatypeReport){
 $javaCommand = "-jar " + """" + $fullUploaderPath + """" + " " + $uploaderCommand
 
 
+###########################
+# uncomment for debugging #
+###########################
+
+#Write-Host $javaCommand
+
 
 # Call the FoDUpload.jar app with the required parameters
 
@@ -151,11 +157,6 @@ $ps.WaitForExit()
 
 Write-Host $Out
 
-###########################
-# uncomment for debugging #
-###########################
-
-# Write-Host $javaCommand
 
 
 
