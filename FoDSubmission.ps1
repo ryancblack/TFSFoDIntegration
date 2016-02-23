@@ -8,28 +8,41 @@
 [CmdletBinding()]
 param(
 
-[string]$source= $(throw "-source is required, e.g. ,$(TF_BUILD_BUILDDIRECTORY)"),
+[string]$Source= $(throw "-Source is required, e.g. ,$(TF_BUILD_BUILDDIRECTORY)"),
 
-[string]$destination='C:\Windows\Temp',
+[string]$Destination='C:\Windows\Temp',
 
-[string]$applicationURL = $(throw "-applicationURL is required"),
+[string]$UploadURL = $(throw "-UploadURL is required"),
 
-[string]$username= $(throw '-username UserName is required.'),
+[string]$Username= $(throw '-Username UserName is required.'),
 
-[string]$password= $(throw '-password yourpassword is required.'),
+[string]$Password= $(throw '-Password yourpassword is required.'),
+
+[string]$ProxyURL,
+
+[string]$ProxyUserName,
+
+[string]$ProxyPassword,
+
+[string]$NTworkstationName,
+
+[string]$NTDomain,
+
+[ValidateRange(1,60)]
+[int]$PollingInterval,
+
+[string]$zipName='fod.zip',
 
 [switch]$ExpressScan=$False,
 
 [switch]$AutomatedAudit=$False,
 
-[switch]$SonatypeReport=$False,
-
-[string]$zipName='fod.zip'
+[switch]$SonatypeReport=$False
 
 )
 
 
-$fullzippath = [io.path]::combine($destination, $zipName)
+$fullZipPath = [io.path]::combine($Destination, $zipName)
 
 function Get-ScriptDirectory
 {
@@ -37,17 +50,17 @@ function Get-ScriptDirectory
   Split-Path $Invocation.MyCommand.Path
 }
 
-$scriptpath = Get-ScriptDirectory
-$fulluploaderpath = [io.path]::combine($scriptpath, 'FoDUpload.jar')
+$scriptPath = Get-ScriptDirectory
+$fullUploaderPath = [io.path]::combine($scriptPath, 'FoDUpload.jar')
 
 # Delete existing ZIP, if needed
 
 
-If(Test-path $fullzippath) {
+If(Test-path $fullZipPath) {
 
-Remove-item $fullzippath
+Remove-item $fullZipPath
 
-[console]::WriteLine("Deleted existing submission ZIP: {0}", $fullzippath)
+[console]::WriteLine("Deleted existing submission ZIP: {0}", $fullZipPath)
 
 
 }
@@ -56,23 +69,61 @@ Remove-item $fullzippath
 
 Add-Type -assembly "system.io.compression.filesystem"
 
-[io.compression.zipfile]::CreateFromDirectory($Source, $fullzippath)
+[io.compression.zipfile]::CreateFromDirectory($Source, $fullZipPath)
 
 
-Write-Host "Created submission ZIP: $fullzippath"
+Write-Host "Created submission ZIP: $fullZipPath"
 
 
-Write-Host "Application URL: $applicationURL"
+Write-Host "Application URL: $UploadURL"
 
 
-# Prepare the argument string for FodUpload.jar
+# Prepare the required argument string
 
 $sb = New-Object -TypeName "System.Text.StringBuilder";
 
-[void]$sb.Append($username + " ")
-[void]$sb.Append($password + " ")
-[void]$sb.Append("""" + $applicationURL + """ ")
-[void]$sb.Append("""" + $fullzippath + """")
+[void]$sb.Append($Username + " ")
+[void]$sb.Append($Password + " ")
+[void]$sb.Append("""" + $UploadURL + """ ")
+[void]$sb.Append("""" + $fullZipPath + """ ")
+
+# Append optional proxy settings
+
+if ($ProxyURL -ne $null){
+
+[void]$sb.Append("proxyUrl """ + $ProxyURL + """ ")
+
+if($ProxyUserName -ne $null){
+
+[void]$sb.Append("proxyUsername " + $ProxyUserName + " ")
+}
+
+if($ProxyPassword -ne $null){
+
+[void]$sb.Append("proxyPassword " + $ProxyPassword + " ")
+}
+if($NTworkstationName -ne $null){
+
+[void]$sb.Append("ntWorkstation " + $NTworkstationName + " ")
+}
+if($NTDomain -ne $null){
+
+[void]$sb.Append("ntDomain " + $NTDomain)
+}
+
+}
+
+# Append optional polling preference
+
+if($PollingInterval -ne $null){
+
+[void]$sb.Append(" " + '-polling_interval:' + $PollingInterval)
+
+}
+
+
+
+# Append optional scan preference settings
 
 if($ExpressScan) {
 
@@ -88,7 +139,8 @@ if($SonatypeReport){
 [string] $uploaderCommand = $sb.ToString()
 
 
-$javaCommand = "-jar " + """" + $fulluploaderpath + """" + " " + $uploaderCommand
+$javaCommand = "-jar " + """" + $fullUploaderPath + """" + " " + $uploaderCommand
+
 
 
 # Call the FoDUpload.jar app with the required parameters
@@ -117,4 +169,6 @@ $ps.WaitForExit()
 ###########################
 
 # Write-Host $javaCommand
+
+
 
