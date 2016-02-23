@@ -26,10 +26,7 @@ param(
 
 [string]$NTworkstationName,
 
-[string]$NTDomain,
-
-[ValidateRange(1,60)]
-[int]$PollingInterval,
+[string]$NTdomain,
 
 [string]$zipName='fod.zip',
 
@@ -108,20 +105,10 @@ if($NTworkstationName -ne $null){
 }
 if($NTDomain -ne $null){
 
-[void]$sb.Append("ntDomain " + $NTDomain)
+[void]$sb.Append("ntDomain " + $NTdomain)
 }
 
 }
-
-# Append optional polling preference
-
-if($PollingInterval -ne $null){
-
-[void]$sb.Append(" " + '-polling_interval:' + $PollingInterval)
-
-}
-
-
 
 # Append optional scan preference settings
 
