@@ -1,8 +1,8 @@
-## HPE Fortify on Demand - Team Foundation Server Build Integration
+## HPE Fortify on Demand - TFS Build Integration
 
 This project aims to provide a simple example of Microsoft Team Foundation Server integration with the HPE Fortify on Demand uploader tool available to customers.
 
-The PowerShell script, located on the server with the upload tool, may be called via a Build Definition with required parameters. Please review the included PDF for detailed instructions.
+The PowerShell script, located on the server with the upload tool, may be called via a Build Definition with required parameters. Please review the included PDF for detailed information.
 
 
 
@@ -14,7 +14,7 @@ The PowerShell script, located on the server with the upload tool, may be called
 |    -Source                                                |    Designates the root directory of the build project                                                                                                                  |
 |    -Username                                              |    Fortify on Demand portal User Name                                                                                                                                  |
 |    -Password                                              |    Fortify on Demand portal Password                                                                                                                                   |
-|    -UploadURL                                             | Upload URL from the Fortify on Demand portal                                                                                                                           |
+|    -UploadURL                                             |    Upload URL from the Fortify on Demand portal                                                                                                                        |
 |    -ProxyURL  (optional)                                  |    Internal proxy address                                                                                                                                              |
 |    -ProxyUserName                                         |    Proxy username                                                                                                                                                      |
 |    -ProxyPassword                                         |    Proxy password                                                                                                                                                      |
