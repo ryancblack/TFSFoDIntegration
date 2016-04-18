@@ -1,6 +1,6 @@
 ## HPE Fortify on Demand - TFS Build Integration
 
-### This project has been superceded by: https://github.com/ryancblack/FoDUploader
+### This project has been superseded by: https://github.com/ryancblack/FoDUploader
 
 
 This project aims to provide a simple example of Microsoft Team Foundation Server integration with the HPE Fortify on Demand uploader tool available to customers.
